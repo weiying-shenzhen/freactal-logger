@@ -1,6 +1,7 @@
 import log from './log';
+import { memoize } from './helpers';
 
-const createLogger = (options = {}) => freactalCxt => Object.assign({}, freactalCxt, {
+const createLogger = (options = {}) => memoize(freactalCxt => Object.assign({}, freactalCxt, {
   effects: Object.keys(freactalCxt.effects).reduce((memo, key) => {
     memo[key] = (...args) => freactalCxt.effects[key](...args).then((nextState) => {
       const logEntry = {};
@@ -14,9 +15,6 @@ const createLogger = (options = {}) => freactalCxt => Object.assign({}, freactal
     });
     return memo;
   }, {}),
-});
+}));
 
-const defaultLogger = createLogger();
-
-export { createLogger, defaultLogger as logger };
-export default defaultLogger;
+export default createLogger;

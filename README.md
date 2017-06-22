@@ -13,27 +13,19 @@
 `npm i --save freactal-logger`
 
 ## Usage
+
+In freactal mddleware is defined per state container, so you should create logger for per state container.
+
 ```javascript
 import { provideState } from 'freactal';
-import logger from 'freactal-logger';
-
-// Logger with default options
-provideState({
-  middleware: [logger]
-});
-```
-
-Or you can create your own logger with custom [options](#options):
-```javascript
-import { provideState } from 'freactal';
-import { createLogger } from 'freactal-logger';
+import createLogger from 'freactal-logger';
 
 const logger = createLogger({
   // ...options
 });
 
 provideState({
-  middleware: [logger]
+  middleware: [logger],
 });
 ```
 
@@ -55,12 +47,13 @@ Takes a boolean to inidicate the log group should be collapsed or not.
 ### Log only in development
 ```javascript
 import { provideState } from 'freactal';
-import logger from 'freactal-logger';
+import createLogger from 'freactal-logger';
 
 
 const middlewares = [];
 
 if (process.env.NODE_ENV === `development`) {
+  const logger = createLogger();
   middlewares.push(logger);
 }
 
@@ -70,7 +63,6 @@ provideState({
 ```
 
 ## To Do
-- [ ] Improve performance
 - [ ] Write tests
 - [ ] Support more options
 
