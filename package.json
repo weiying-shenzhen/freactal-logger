@@ -1,6 +1,6 @@
 {
   "name": "freactal-logger",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Logger for freactal",
   "main": "dist/index.js",
   "devDependencies": {
