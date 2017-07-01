@@ -1,7 +1,7 @@
 import log from './log';
-import { configureOnce } from './helpers';
+import { memoize } from './helpers';
 
-const createLogger = (options = {}) => configureOnce(freactalCxt => Object.assign({}, freactalCxt, {
+const createLogger = (options = {}) => memoize(freactalCxt => Object.assign({}, freactalCxt, {
   effects: Object.keys(freactalCxt.effects).reduce((memo, key) => {
     memo[key] = (...args) => freactalCxt.effects[key](...args).then((nextState) => {
       const logEntry = {};

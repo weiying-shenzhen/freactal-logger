@@ -4,16 +4,22 @@ export const pad = (num, maxLength) => repeat('0', maxLength - num.toString().le
 
 export const formatTime = time => `${pad(time.getHours(), 2)}:${pad(time.getMinutes(), 2)}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`;
 
-export const configureOnce = (fn) => {
-  let configuredEffects;
-  let isConfigured = false;
-  return (freactalCxt) => {
-    if (!isConfigured) {
-      isConfigured = true;
-      configuredEffects = fn(freactalCxt).effects;
+const shouldUpdate = (lastArg, arg) => {
+  const lastKeys = Object.keys(lastArg);
+  const keys = Object.keys(arg);
+
+  return lastKeys.length !== keys.length ||
+    keys.some(key => arg[key] !== lastArg[key]);
+};
+
+export const memoize = (func) => {
+  let lastArg = {};
+  let lastResult;
+  return (arg) => {
+    if (shouldUpdate(lastArg, arg)) {
+      lastResult = func(arg);
     }
-    return Object.assign({}, freactalCxt, {
-      effects: configuredEffects,
-    });
+    lastArg = arg;
+    return lastResult;
   };
 };
